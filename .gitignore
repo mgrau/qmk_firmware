@@ -71,5 +71,10 @@ secrets.tar
 id_rsa_*
 /.vs
 
+<<<<<<< HEAD
 # python things
 __pycache__
+=======
+# ignore mdloader
+mdloader*
+>>>>>>> add ignore mdloader to gitignore
