@@ -5,6 +5,9 @@
     }
   ],
   "settings": {
-    "editor.formatOnSave": false
+    "editor.formatOnSave": false,
+    "files.associations": {
+      "rgb_matrix_user.h": "c"
+    }
   }
 }
