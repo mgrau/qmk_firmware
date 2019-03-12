@@ -1,5 +1,5 @@
 #include QMK_KEYBOARD_H
-// #include "rgb_matrix_user.h"
+#include "rgb_matrix_user.h"
 
 enum alt_keycodes {
     L_BRI = SAFE_RANGE, //LED Brightness Increase
@@ -92,7 +92,7 @@ void matrix_scan_user(void) {
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     static uint32_t key_timer;
 
-    // rgb_matrix_record_key_press(record);
+    rgb_matrix_record_key_press(record);
 
     switch (keycode) {
         case L_BRI:
