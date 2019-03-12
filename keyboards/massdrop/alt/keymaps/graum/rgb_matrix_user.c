@@ -27,6 +27,7 @@ static uint8_t led_cur_index;
 #define MAX_B (MAX_RGB & 0xff)
 
 #define UNDERGLOW_RGB 0x4f002e
+// #define UNDERGLOW_RGB 0x008080
 #define UNDERGLOW_R (UNDERGLOW_RGB >> 16 & 0xff)
 #define UNDERGLOW_G (UNDERGLOW_RGB >> 8 & 0xff)
 #define UNDERGLOW_B (UNDERGLOW_RGB & 0xff)
