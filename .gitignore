@@ -54,7 +54,11 @@ util/Win_Check_Output.txt
 .vscode/tasks.json
 .vscode/last.sql
 .vscode/temp.sql
+<<<<<<< HEAD
 .vscode/ipch/
+=======
+.vscode/*
+>>>>>>> add all .vscode to gitignore
 .stfolder
 .tags
 
