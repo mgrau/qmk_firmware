@@ -1,10 +1,17 @@
 #include QMK_KEYBOARD_H
 
-// Give each layer a name
-#define _BASE   0 // base layer
-#define _FL     1 // function layer
-#define _SL     2 // space bar layer
-#define _GL     3 // gaming layer
+enum mg_layers {
+  _BASE,     // base layer
+  _LOWER,    // lower layer
+  _RAISE,    // raise layer
+  _ADJUST,   // adjust tri state layer
+  _FUNCTION, // function layer
+  _GAME,     // gaming layer
+};
+
+#define LOWER LT(_LOWER, KC_SPC)
+#define RAISE LT(_RAISE, KC_SPC)
+#define FUNCT MO(_FUNCTION)
 
 #define _______ KC_TRNS
 #define CTL_ESC MT(MOD_LCTL, KC_ESC)
@@ -45,25 +52,44 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC, KC_RBRC, KC_BSLS,         \
     CTL_ESC, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,          KC_ENT,          \
     KC_LSPO,          KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH,          KC_RSPC,         \
-    DEL_CTL, KC_LGUI, KC_LALT,          KC_SPC,           KC_SPC,           LT(_SL, KC_SPC),  MO(_FL), KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT \
+    DEL_CTL, KC_LGUI, KC_LALT,          LOWER,            KC_SPC,           RAISE,            FUNCT,   KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT \
 ),
-	[_SL] = MGLAYOUT(
+	[_RAISE] = MGLAYOUT(
     KC_ESC,    KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,  KC_F10,  KC_F11,  KC_F12,          KC_DEL, \
     _______, KC_MRWD, KC_MPLY, KC_MFFD, _______, _______, _______, KC_HOME, KC_PGDN, KC_PGUP,  KC_END, _______, _______, _______,         \
     _______, KC_VOLD, KC_MUTE, KC_VOLU, _______, _______, KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, _______, _______,          _______,         \
     _______,          _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______,         \
     _______, _______, _______,          _______,          _______,          _______,          _______, KC_HOME, KC_PGDN, KC_PGUP, KC_END  \
 ),
-	[_FL] = MGLAYOUT(
-    _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,RGB_RMOD, RGB_MOD,          RGB_TOG,\
+	[_LOWER] = MGLAYOUT(
+    KC_ESC,    KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,  KC_F10,  KC_F11,  KC_F12,          KC_DEL, \
+    _______, KC_MRWD, KC_MPLY, KC_MFFD, _______, _______, _______, KC_HOME, KC_PGDN, KC_PGUP,  KC_END, _______, _______, _______,         \
+    _______, KC_VOLD, KC_MUTE, KC_VOLU, _______, _______, KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, _______, _______,          _______,         \
+    _______,          _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______,         \
+    _______, _______, _______,          _______,          _______,          _______,          _______, KC_HOME, KC_PGDN, KC_PGUP, KC_END  \
+),
+	[_ADJUST] = MGLAYOUT( 
+    _______, KC_A   , _______, _______, _______, _______, _______, _______, _______, _______, _______,RGB_RMOD, RGB_MOD,          RGB_TOG,\
     _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,         \
     _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______,         \
     _______,          _______, _______, _______, _______, RESET,   _______, _______, _______, _______, _______,          _______,         \
     _______, _______, _______,          _______,          _______,          _______,          _______, _______, _______, _______, _______ \
 ),
+	[_FUNCTION] = MGLAYOUT(
+    _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,RGB_RMOD, RGB_MOD,          RGB_TOG,\
+    _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,         \
+    _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______,         \
+    _______,          _______, _______, _______, _______, RESET,   _______, _______, _______, _______, _______,          _______,         \
+    _______, _______, _______,          _______,          _______,          _______,          _______, _______, _______, _______, _______ \
+  )
+
 };
 
 // Runs just one time when the keyboard initializes.
 void matrix_init_user(void) {
   // rgblight_disable();
 };
+
+uint32_t layer_state_set_user(uint32_t state) {
+  return update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST);
+}
