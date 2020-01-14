@@ -2,6 +2,21 @@
   "folders": [
     {
       "path": "."
+    },
+    {
+      "path": "keyboards/dz60"
+    },
+    {
+      "path": "keyboards/massdrop/alt"
+    },
+    {
+      "path": "keyboards/ergodox_ez"
+    },
+    {
+      "path": "keyboards/satan"
+    },
+    {
+      "path": "keyboards/planck"
     }
   ],
   "settings": {
