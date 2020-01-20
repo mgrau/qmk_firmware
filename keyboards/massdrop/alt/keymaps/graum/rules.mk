@@ -1,7 +1,7 @@
 # project specific files
-SRC = led_programs.c
+# SRC = led_programs.c
 SRC += matrix.c
-SRC += rgb_matrix_user.c
+# SRC += rgb_matrix_user.c
 
 #For platform and packs
 ARM_ATSAM = SAMD51J18A
@@ -25,6 +25,7 @@ BACKLIGHT_ENABLE = no       # Enable keyboard backlight functionality on B7 by d
 RGBLIGHT_ENABLE = no        # Enable keyboard RGB underglow
 MIDI_ENABLE = no            # MIDI support (+2400 to 4200, depending on config)
 UNICODE_ENABLE = no         # Unicode
+UNICODEMAP_ENABLE = yes		# Unicode Map
 BLUETOOTH_ENABLE = no       # Enable Bluetooth with the Adafruit EZ-Key HID
 AUDIO_ENABLE = no           # Audio output on port C6
 FAUXCLICKY_ENABLE = no      # Use buzzer to emulate clicky switches
@@ -33,3 +34,5 @@ VIRTSER_ENABLE = no         # USB Serial Driver
 RAW_ENABLE = no             # Raw device
 AUTO_SHIFT_ENABLE = no      # Auto Shift
 TAP_DANCE_ENABLE = no       # Tap Dance
+
+RGB_MATRIX_ENABLE = no
