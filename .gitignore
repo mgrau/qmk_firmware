@@ -63,23 +63,15 @@ util/Win_Check_Output.txt
 *.gif
 *.jpg
 
-# Do not ignore MiniDox left/right hand eeprom files
-!keyboards/minidox/*.eep
-
 # things travis sees
 secrets.tar
 id_rsa_*
 /.vs
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-# ignore mdloader
-mdloader*
->>>>>>> 9742b8baa42c52e0df9fdb4365a6727346d2eae3
 # python things
 __pycache__
-=======
 # ignore mdloader
 mdloader*
->>>>>>> add ignore mdloader to gitignore
+
+# prerequisites for updating ChibiOS
+/util/fmpp*
