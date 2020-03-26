@@ -56,6 +56,8 @@ enum git_keycodes {
 #define RAS_MOD LT(RAISE, KC_SPC)
 #define FNT_TAB LT(FNT, KC_TAB)
 #define FNT_ENT LT(FNT, KC_ENT)
+#define RGT_CTL MT(MOD_RCTL, KC_RGHT)
+#define LFT_CAD LT(CAD, KC_LEFT)
 
 #define MGLAYOUT( \
 	K000, K001, K002, K003, K004, K005, K006, K007, K008, K009, K010, K011, K012,       K013, \
@@ -78,14 +80,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     FNT_TAB, KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC, KC_RBRC, KC_BSLS,
     CTL_ESC, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,          FNT_ENT,
     KC_LSPO,          KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH,          KC_RSPC,
-    DEL_CTL, KC_LGUI, KC_LALT,                            RAS_MOD,                                     MO(CAD), MO(FUN), KC_RCTL
+    DEL_CTL, KC_LGUI, KC_LALT,                            RAS_MOD,                                     LFT_CAD, MO(FUN), RGT_CTL
     ),
     [RAISE] = MGLAYOUT(
     KC_ESC,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,   KC_DEL,
     _______, KC_MRWD, KC_MPLY, KC_MFFD, _______, _______, _______, KC_HOME, KC_PGDN, KC_PGUP, KC_END,  _______, _______, _______,
     _______, KC_VOLD, KC_MUTE, KC_VOLU, _______, _______, KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, _______, _______,          _______,
     _______,          _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______,
-    _______, _______, _______,                            _______,                                     _______, _______, _______
+    _______, _______, _______,                            _______,                                     KC_HOME, _______, KC_END
     ),
 	[LOWER] = MGLAYOUT(
     KC_ESC,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,   KC_DEL,
