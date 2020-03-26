@@ -17,6 +17,9 @@
     },
     {
       "path": "keyboards/planck"
+    },
+    {
+      "path": "keyboards/ai03/polaris"
     }
   ],
   "settings": {
