@@ -31,6 +31,21 @@ enum layer {
     ADJ,        // rasie + lower
 };
 
+enum git_keycodes {
+    // GIT MACROS
+    GIT_REV = SAFE_RANGE,
+    GIT_TAG,
+    GIT_BRA,
+    GIT_PUL,
+    GIT_MER,
+    GIT_REB,
+    GIT_COM,
+    GIT_CHE,
+    GIT_CLO,
+    GIT_FET,
+    GIT_STA,
+};
+
 #define _______ KC_TRNS
 #define CTL_ESC MT(MOD_LCTL, KC_ESC)
 #define CTL_GRV LCTL(KC_GRV)
@@ -73,7 +88,7 @@ enum layer {
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   	[BASE] = MGLAYOUT(
-    KC_GRV,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS, KC_EQL,  KC_BSPC,
+    GIT_GRV, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS, KC_EQL,  KC_BSPC,
     FNT_TAB, KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC, KC_RBRC, KC_BSLS,
     CTL_ESC, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,          FNT_ENT,
     KC_LSPO,          KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH,          KC_RSPC,
@@ -107,6 +122,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______,          _______, _______, _______, _______, RESET,   _______, _______, _______, _______, _______,          _______,
     _______, _______, _______,                            KC_SPC,                                      _______, _______, _______
     ),
+    [GIT] = MGLAYOUT(
+    _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, GIT_REV,
+    GIT_TAG, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+    _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          GIT_COM,
+    GIT_REB,          _______, _______, _______, _______, _______, _______, _______, _______, _______, GIT_CHE,          _______,
+    GIT_BRA, GIT_PUL, GIT_MER,                            _______,                                     GIT_CLO, GIT_FET, GIT_STA
+    ),
     [CAD] = MGLAYOUT(
     X(IBNG), _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
     _______, X(AND),  X(OR),   X(INSC), X(UNI),  X(SUB),  X(SUP),  X(FALL), X(INF),  X(EXIS), X(PART), _______, _______, _______,
@@ -128,4 +150,74 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______,          X(F_Z),  X(F_X),  X(F_C),  X(F_V),  X(F_B),  X(F_N),  X(F_M),  _______, _______, _______,          _______,
     _______, _______, _______,                            _______,                                     _______, _______, _______
     ),
+    /*
+    [X] = MGLAYOUT(
+    _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+    _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+    _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______,
+    _______,          _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______,
+    _______, _______, _______,                            _______,                                     _______, _______, _______
+    ),
+    */
 };
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case GIT_REV:
+            if (record->event.pressed) {
+                SEND_STRING("git revert");
+            }
+            break;
+        case GIT_TAG:
+            if (record->event.pressed) {
+                SEND_STRING("git tag");
+            }
+            break;
+        case GIT_BRA:
+            if (record->event.pressed) {
+                SEND_STRING("git branch");
+            }
+            break;
+        case GIT_PUL:
+            if (record->event.pressed) {
+                SEND_STRING("git pull");
+            }
+            break;
+        case GIT_MER:
+            if (record->event.pressed) {
+                SEND_STRING("git merge");
+            }
+            break;
+        case GIT_REB:
+            if (record->event.pressed) {
+                SEND_STRING("git rebase");
+            }
+            break;
+        case GIT_COM:
+            if (record->event.pressed) {
+                SEND_STRING("git commit");
+            }
+            break;
+        case GIT_CHE:
+            if (record->event.pressed) {
+                SEND_STRING("git checkout");
+            }
+            break;
+        case GIT_CLO:
+            if (record->event.pressed) {
+                SEND_STRING("git clone");
+            }
+            break;
+        case GIT_FET:
+            if (record->event.pressed) {
+                SEND_STRING("git fetch");
+            }
+            break;
+        case GIT_STA:
+            if (record->event.pressed) {
+                SEND_STRING("git stash");
+            }
+            break;
+    }
+    return true; //Process all other keycodes normally
+}

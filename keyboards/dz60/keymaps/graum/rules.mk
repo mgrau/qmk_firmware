@@ -55,5 +55,5 @@ NKRO_ENABLE = no		# USB Nkey Rollover - if this doesn't work, see here: https://
 BACKLIGHT_ENABLE = no  # Enable keyboard backlight functionality
 AUDIO_ENABLE = no
 RGBLIGHT_ENABLE = no
-
+UNICODEMAP_ENABLE = yes		# Unicode Map
 LAYOUTS = 60_ansi 60_iso 60_hhkb
