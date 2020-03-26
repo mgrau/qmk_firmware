@@ -54,11 +54,7 @@ util/Win_Check_Output.txt
 .vscode/tasks.json
 .vscode/last.sql
 .vscode/temp.sql
-<<<<<<< HEAD
-.vscode/ipch/
-=======
 .vscode/*
->>>>>>> add all .vscode to gitignore
 .stfolder
 .tags
 
@@ -76,6 +72,11 @@ id_rsa_*
 /.vs
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+# ignore mdloader
+mdloader*
+>>>>>>> 9742b8baa42c52e0df9fdb4365a6727346d2eae3
 # python things
 __pycache__
 =======
