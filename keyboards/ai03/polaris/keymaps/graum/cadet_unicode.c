@@ -93,6 +93,7 @@ enum unicode_names {
     F_ll,
     F_gg,
     Fint,
+    HBAR,
 };
 
 const uint32_t PROGMEM unicode_map[] = {
@@ -196,8 +197,7 @@ const uint32_t PROGMEM unicode_map[] = {
     [F_ll]  = 0x226A,   // ≪
     [F_gg]  = 0x226B,   // ≫
     [Fint]  = 0x222B,   // ∫
-
-
+    [HBAR]  = 0x210F,   // ℏ
 
 };
 
