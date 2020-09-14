@@ -75,3 +75,6 @@ mdloader*
 
 # prerequisites for updating ChibiOS
 /util/fmpp*
+
+# Allow to exist but don't include it in the repo
+user_song_list.h

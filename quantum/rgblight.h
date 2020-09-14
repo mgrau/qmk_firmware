@@ -142,7 +142,7 @@ enum RGBLIGHT_EFFECT_MODE {
 #    endif
 
 #    ifndef RGBLIGHT_EFFECT_CHRISTMAS_INTERVAL
-#        define RGBLIGHT_EFFECT_CHRISTMAS_INTERVAL 1000
+#        define RGBLIGHT_EFFECT_CHRISTMAS_INTERVAL 40
 #    endif
 
 #    ifndef RGBLIGHT_EFFECT_CHRISTMAS_STEP
@@ -196,7 +196,20 @@ typedef struct {
 #        define RGBLIGHT_END_SEGMENT_INDEX (255)
 #        define RGBLIGHT_END_SEGMENTS \
             { RGBLIGHT_END_SEGMENT_INDEX, 0, 0, 0 }
-#        define RGBLIGHT_MAX_LAYERS 8
+#        ifndef RGBLIGHT_MAX_LAYERS
+#            define RGBLIGHT_MAX_LAYERS 8
+#        endif
+#        if RGBLIGHT_MAX_LAYERS <= 0
+#            error invalid RGBLIGHT_MAX_LAYERS value (must be >= 1)
+#        elif RGBLIGHT_MAX_LAYERS <= 8
+typedef uint8_t rgblight_layer_mask_t;
+#        elif RGBLIGHT_MAX_LAYERS <= 16
+typedef uint16_t rgblight_layer_mask_t;
+#        elif RGBLIGHT_MAX_LAYERS <= 32
+typedef uint32_t rgblight_layer_mask_t;
+#        else
+#            error invalid RGBLIGHT_MAX_LAYERS value (must be <= 32)
+#        endif
 #        define RGBLIGHT_LAYER_SEGMENTS(...) \
             { __VA_ARGS__, RGBLIGHT_END_SEGMENTS }
 #        define RGBLIGHT_LAYERS_LIST(...) \
@@ -247,7 +260,7 @@ typedef struct _rgblight_status_t {
     uint8_t change_flags;
 #    endif
 #    ifdef RGBLIGHT_LAYERS
-    uint8_t enabled_layer_mask;
+    rgblight_layer_mask_t enabled_layer_mask;
 #    endif
 } rgblight_status_t;
 
@@ -323,7 +336,9 @@ void rgblight_increase_val_noeeprom(void);
 void rgblight_decrease_val(void);
 void rgblight_decrease_val_noeeprom(void);
 void rgblight_increase_speed(void);
+void rgblight_increase_speed_noeeprom(void);
 void rgblight_decrease_speed(void);
+void rgblight_decrease_speed_noeeprom(void);
 void rgblight_sethsv(uint8_t hue, uint8_t sat, uint8_t val);
 void rgblight_sethsv_noeeprom(uint8_t hue, uint8_t sat, uint8_t val);
 
@@ -337,6 +352,8 @@ uint8_t rgblight_get_mode(void);
 uint8_t rgblight_get_hue(void);
 uint8_t rgblight_get_sat(void);
 uint8_t rgblight_get_val(void);
+bool    rgblight_is_enabled(void);
+HSV     rgblight_get_hsv(void);
 
 /* === qmk_firmware (core)internal Functions === */
 void     rgblight_init(void);
