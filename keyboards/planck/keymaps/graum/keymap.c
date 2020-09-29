@@ -16,6 +16,7 @@
 
 #include QMK_KEYBOARD_H
 #include "muse.h"
+#include "cadet_unicode.c"
 
 extern keymap_config_t keymap_config;
 

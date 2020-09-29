@@ -8,6 +8,9 @@
   #include "ssd1306.h"
 #endif
 
+#include "cadet_unicode.c"
+#include "logo.c"
+
 extern uint8_t is_master;
 
 enum layer_number {
@@ -15,6 +18,8 @@ enum layer_number {
   _LOWER,
   _RAISE,
   _ADJUST,
+  _GREEK,
+  _GAME
 };
 
 #define CTL_ESC MT(MOD_LCTL, KC_ESC)
@@ -41,11 +46,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 
  [_QWERTY] = LAYOUT( \
-  KC_GRV,   KC_1,   KC_2,    KC_3,    KC_4,    KC_5,                     KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_BSPC,  \
-  KC_TAB,   KC_Q,   KC_W,    KC_E,    KC_R,    KC_T,                     KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_BSLS,  \
-  CTL_ESC,  KC_A,   KC_S,    KC_D,    KC_F,    KC_G,                     KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,  \
-  DEL_SFT,  KC_Z,   KC_X,    KC_C,    KC_V,    KC_B, KC_LBRC,  KC_RBRC,  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_SFTENT,\
-                       KC_LALT, KC_LGUI, MO(_LOWER), SPC_LOW,  ENT_UP, MO(_RAISE), KC_BSPC, KC_RGUI \
+  KC_GRV,   KC_1,   KC_2,    KC_3,    KC_4,    KC_5,                      KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_BSPC, \
+  KC_TAB,   KC_Q,   KC_W,    KC_E,    KC_R,    KC_T,                      KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_BSLS, \
+  CTL_ESC,  KC_A,   KC_S,    KC_D,    KC_F,    KC_G,                      KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT, \
+  DEL_SFT,  KC_Z,   KC_X,    KC_C,    KC_V,    KC_B,    KC_LBRC, KC_RBRC, KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_SFTENT,\
+                       KC_LALT, KC_LGUI, MO(_LOWER),    SPC_LOW, ENT_UP,  MO(_RAISE), KC_LGUI, MO(_GREEK) \
 ),
 /* LOWER
  * ,-----------------------------------------.                    ,-----------------------------------------.
@@ -62,10 +67,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                   `----------------------------'           '------''--------------------'
  */
 [_LOWER] = LAYOUT( \
-  _______, _______, _______, _______, _______, _______,                   _______, _______, _______,_______, _______, _______, \
-  _______, KC_MPRV, KC_MPLY, KC_MNXT, _______, _______,                   _______, _______, _______,_______, _______, _______, \
-  _______, KC_VOLD, KC_MUTE, KC_VOLU, _______, _______,                   _______, _______, _______,_______, _______, _______, \
-  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,_______, _______, _______, \
+  _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,                     KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  _______, \
+  _______, KC_MPRV, KC_MPLY, KC_MNXT, _______, _______,                   _______, _______, _______, _______, _______, _______, \
+  _______, KC_VOLD, KC_MUTE, KC_VOLU, _______, _______,                   _______, _______, _______, _______, _______, _______, \
+  _______, _______, _______, _______, _______, _______, KC_LPRN, KC_RPRN, _______, _______, _______, _______, _______, _______, \
                              _______, _______, _______, _______, _______, _______, _______, _______ \
 ),
 /* RAISE
@@ -75,7 +80,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |   `  |   1  |   2  |   3  |   4  |   5  |                    |   6  |   7  |   8  |   9  |   0  |      |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
  * |  F1  |  F2  |  F3  |  F4  |  F5  |  F6  |-------.    ,-------| Left | Down |  Up  |Right |Right |      |
- * |------+------+------+------+------+------|   [   |    |    ]  |------+------+------+------+------+------|
+ * |------+------+------+------+------+------|   (   |    |    )  |------+------+------+------+------+------|
  * |  F7  |  F8  |  F9  | F10  | F11  | F12  |-------|    |-------|   +  |   -  |   =  |   [  |   ]  |   \  |
  * `-----------------------------------------/       /     \      \-----------------------------------------'
  *                   | LAlt | LGUI |LOWER | /Space  /       \Enter \  |RAISE |BackSP| RGUI |
@@ -84,10 +89,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 
 [_RAISE] = LAYOUT( \
-  _______, _______, _______, _______, _______, _______,                    _______, _______, _______, KC_MINS, KC_EQL,  _______, \
-  KC_GRV,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                       KC_HOME, KC_PGDN, KC_PGUP, KC_END,  _______, _______, \
-  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,                      KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, _______, _______, \
-  KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  _______, _______,  KC_PLUS, KC_MINS, KC_EQL,  KC_LBRC, KC_RBRC, _______, \
+  _______, _______, _______, _______, _______, _______,                   _______, _______, _______, KC_MINS, KC_EQL,  _______, \
+  KC_GRV,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                      KC_HOME, KC_PGDN, KC_PGUP, KC_END,  _______, _______, \
+  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,                     KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, _______, _______, \
+  KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  KC_LPRN, KC_RPRN, KC_PLUS, KC_MINS, KC_EQL,  KC_LBRC, KC_RBRC, _______, \
                              _______, _______, _______, _______, _______, _______, _______, _______ \
 ),
 /* ADJUST
@@ -105,10 +110,24 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                   `----------------------------'           '------''--------------------'
  */
  [_ADJUST] = LAYOUT( \
-  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   XXXXXXX, XXXXXXX, XXXXXXX,XXXXXXX, XXXXXXX, XXXXXXX, \
-  XXXXXXX, KC_Z,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   XXXXXXX, XXXXXXX, XXXXXXX,XXXXXXX, XXXXXXX, XXXXXXX, \
-  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   XXXXXXX, XXXXXXX, XXXXXXX,XXXXXXX, XXXXXXX, XXXXXXX, \
-  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,XXXXXXX, XXXXXXX, XXXXXXX, \
+  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, \
+  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, \
+  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, \
+  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, \
+                             _______, _______, _______, _______, _______, _______, _______, _______ \
+),
+ [_GREEK] = LAYOUT( \
+  _______, _______, _______, _______, _______, _______,                   _______, _______, _______, _______, _______, _______, \
+  _______, GK_Q,    GK_W,    GK_E,    GK_R,    GK_T,                      GK_Y,    GK_U,    GK_I,    GK_O,    GK_P,    _______, \
+  _______, GK_A,    GK_S,    GK_D,    GK_F,    GK_G,                      GK_H,    GK_J,    GK_K,    GK_L,    _______, _______, \
+  _______, GK_Z,    GK_X,    GK_C,    GK_V,    GK_B,    _______, _______, GK_N,    GK_M,    _______, _______, _______, _______, \
+                             _______, _______, _______, _______, _______, _______, _______, _______ \
+),
+ [_GAME] = LAYOUT( \
+  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, \
+  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, \
+  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, \
+  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, \
                              _______, _______, _______, _______, _______, _______, _______, _______ \
 )
 };
@@ -157,7 +176,7 @@ void oled_task_user(void) {
     //oled_write_ln(read_host_led_state(), false);
     //oled_write_ln(read_timelog(), false);
   } else {
-    oled_write(read_logo(), false);
+    render_logo();
   }
 }
 #endif // OLED_DRIVER_ENABLE
