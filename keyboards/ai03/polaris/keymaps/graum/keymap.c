@@ -23,12 +23,11 @@ enum layer {
     GAME,       // gaming layer
     GIT,        // git macro layer
     CAD,        // cadet unicode layer
-    FNT,        // front cadet layer
-    UP,         // shifted front cadet layer
+    GRK,        // front cadet layer (greek)
     FUT,        // futhark layer
     RAISE,
     LOWER,
-    ADJ,        // rasie + lower
+    ADJ,        // raies + lower
 };
 
 enum git_keycodes {
@@ -54,8 +53,8 @@ enum git_keycodes {
 #define SPACE_MOD LT(SPACE, KC_SPC)
 #define LOW_MOD LT(LOWER, KC_SPC)
 #define RAS_MOD LT(RAISE, KC_SPC)
-#define FNT_TAB LT(FNT, KC_TAB)
-#define FNT_ENT LT(FNT, KC_ENT)
+#define GRK_TAB LT(GRK, KC_TAB)
+#define GRK_ENT LT(GRK, KC_ENT)
 #define RGT_CTL MT(MOD_RCTL, KC_RGHT)
 #define LFT_CAD LT(CAD, KC_LEFT)
 
@@ -77,8 +76,8 @@ enum git_keycodes {
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   	[BASE] = MGLAYOUT(
     GIT_GRV, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS, KC_EQL,  KC_BSPC,
-    FNT_TAB, KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC, KC_RBRC, KC_BSLS,
-    CTL_ESC, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,          FNT_ENT,
+    GRK_TAB, KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC, KC_RBRC, KC_BSLS,
+    CTL_ESC, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,          GRK_ENT,
     KC_LSFT,          KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH,          KC_RSFT,
     DEL_CTL, KC_LGUI, KC_LALT,                            RAS_MOD,                                     LFT_CAD, MO(FUN), RGT_CTL
     ),
@@ -124,18 +123,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______,          X(LDO),  X(LUP),  X(NOTE), X(ASYM), X(EQIV), X(LEQ),  X(GEQ),  _______, _______, _______,          _______,
     _______, _______, _______,                            _______,                                     _______, _______, _______
     ),
-    [FNT] = MGLAYOUT(
+    [GRK] = MGLAYOUT(
     _______, X(F_1),  X(F_2),  X(F_3),  X(F_4),  X(F_5),  X(F_6),  X(F_7),  X(F_8),  X(F_9),  X(F_0),  X(F_11), X(F_12), _______,
-    _______, X(F_q),  X(F_w),  X(F_e),  X(F_r),  X(F_t),  X(F_y),  X(F_u),  X(F_i),  X(F_o),  X(F_p),  _______, _______, _______,
-    _______, X(F_a),  X(F_s),  X(F_d),  X(F_f),  X(F_g),  X(F_h),  X(F_j),  X(F_k),  X(F_l),  _______, _______,          _______,
-    MO(UP),           X(F_z),  X(F_x),  X(F_c),  X(F_v),  X(F_b),  X(F_n),  X(F_m),  X(F_ll), X(F_gg), X(Fint),          MO(UP),
-    _______, _______, _______,                            _______,                                     _______, _______, _______
-    ),
-    [UP] = MGLAYOUT(
-    _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-    _______, X(F_Q),  X(F_W),  X(F_E),  X(F_R),  X(F_T),  X(F_Y),  X(F_U),  X(F_I),  X(F_O),  X(F_P),  _______, _______, _______,
-    _______, X(F_A),  X(F_S),  X(F_D),  X(F_F),  X(F_G),  X(HBAR), X(F_J),  X(F_K),  X(F_L),  _______, _______,          _______,
-    _______,          X(F_Z),  X(F_X),  X(F_C),  X(F_V),  X(F_B),  X(F_N),  X(F_M),  _______, _______, _______,          _______,
+    _______, GK_Q,    GK_W,    GK_E,    GK_R,    GK_T,    GK_Y,    GK_U,    GK_I,    GK_O,    GK_P,    _______, _______, _______,
+    _______, GK_A,    GK_S,    GK_D,    GK_F,    GK_G,    GK_H,    GK_J,    GK_K,    GK_L,    _______, _______,          _______,
+    _______,          GK_Z,    GK_X,    GK_C,    GK_V,    GK_B,    GK_N,    GK_M,    X(F_ll), X(F_gg), X(Fint),          _______,
     _______, _______, _______,                            _______,                                     _______, _______, _______
     ),
     /*

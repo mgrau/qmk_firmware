@@ -20,6 +20,9 @@
     },
     {
       "path": "keyboards/ai03/polaris"
+    },
+    {
+      "path": "keyboards/lily58"
     }
   ],
   "settings": {
