@@ -208,7 +208,7 @@ const uint32_t PROGMEM unicode_map[] = {
 #define GK_E XP(F_e, F_E)
 #define GK_F XP(F_f, F_F)
 #define GK_G XP(F_g, F_G)
-#define GK_H XP(F_h, F_H)
+#define GK_H XP(F_h, HBAR)
 #define GK_I XP(F_i, F_I)
 #define GK_J XP(F_j, F_J)
 #define GK_K XP(F_k, F_K)
