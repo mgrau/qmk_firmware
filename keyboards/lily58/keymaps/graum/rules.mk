@@ -15,7 +15,8 @@ UNICODEMAP_ENABLE = yes     # Unicode
 BLUETOOTH_ENABLE = no       # Enable Bluetooth with the Adafruit EZ-Key HID
 RGBLIGHT_ENABLE = no        # Enable WS2812 RGB underlight. 
 SWAP_HANDS_ENABLE = no      # Enable one-hand typing
-OLED_DRIVER_ENABLE= yes     # OLED display
+OLED_DRIVER_ENABLE = yes     # OLED display
+WPM_ENABLE = yes            # Enable words per minute
 
 # Do not enable SLEEP_LED_ENABLE. it uses the same timer as BACKLIGHT_ENABLE
 SLEEP_LED_ENABLE = no    # Breathing sleep LED during USB suspend

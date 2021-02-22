@@ -10,6 +10,7 @@
 
 #include "cadet_unicode.c"
 #include "logo.c"
+#include "pet.c"
 
 extern uint8_t is_master;
 
@@ -111,8 +112,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  [_ADJUST] = LAYOUT( \
   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, \
   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, \
-  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, \
-  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, \
+  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, TG(_GAME),                 XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, \
+  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, RESET,   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, \
                              _______, _______, _______, _______, _______, _______, _______, _______ \
 ),
  [_GREEK] = LAYOUT( \
@@ -123,11 +124,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                              _______, _______, _______, _______, _______, _______, _______, _______ \
 ),
  [_GAME] = LAYOUT( \
-  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, \
-  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, \
-  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, \
-  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, \
-                             _______, _______, _______, _______, _______, _______, _______, _______ \
+  KC_GRV,  _______, _______, _______, _______, _______,                   _______, _______, _______, _______, _______, _______, \
+  KC_TAB,  _______, _______, _______, _______, _______,                   _______, _______, _______, _______, _______, _______, \
+  KC_LCTL, _______, _______, _______, _______, _______,                   _______, _______, _______, _______, _______, _______, \
+  KC_LSFT, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, \
+                             KC_LALT, KC_LGUI, KC_ESC,  KC_SPC,  KC_ENT,  _______, KC_RGUI, TO(_BASE) \
 )
 };
 
@@ -139,9 +140,10 @@ uint32_t layer_state_set_user(uint32_t state) {
 #ifdef OLED_DRIVER_ENABLE
 
 oled_rotation_t oled_init_user(oled_rotation_t rotation) {
-  if (!is_keyboard_master())
-    return OLED_ROTATION_180;  // flips the display 180 degrees if offhand
-  return rotation;
+  // if (!is_keyboard_master())
+  //   return OLED_ROTATION_180;  // flips the display 180 degrees if offhand
+  // return rotation;
+  return OLED_ROTATION_270;
 }
 
 // When you add source files to SRC in rules.mk, you can use functions.
@@ -156,17 +158,90 @@ const char *read_keylogs(void);
 // void set_timelog(void);
 // const char *read_timelog(void);
 
-void oled_task_user(void) {
-  if (is_keyboard_master()) {
+// status variables
+int current_wpm = 0;
+bool isSneaking = false;
+bool isJumping = false;
+bool showedJump = true;
+
+static void print_status_narrow(void) {
     // If you want to change the display of OLED, you need to change here
-    oled_write_ln(read_layer_state(), false);
-    oled_write_ln(read_keylog(), false);
-    oled_write_ln(read_keylogs(), false);
+    // oled_write_ln(read_keylog(), false);
+    // oled_write_ln(read_keylogs(), false);
     //oled_write_ln(read_mode_icon(keymap_config.swap_lalt_lgui), false);
-    //oled_write_ln(read_host_led_state(), false);
     //oled_write_ln(read_timelog(), false);
+
+    // Print current mode
+    oled_set_cursor(0,0);
+    if (keymap_config.swap_lctl_lgui) {
+        oled_write_raw_P(mac_logo, sizeof(mac_logo));
+    } else {
+        oled_write_raw_P(windows_logo, sizeof(windows_logo));
+    }
+
+
+    // // Print current layer
+    oled_set_cursor(0,5);
+    oled_write("Layer", false);
+
+    oled_set_cursor(0,6);
+    char layer_state_str[8];
+    switch (get_highest_layer(layer_state))
+    {
+    case _BASE:
+     snprintf(layer_state_str, sizeof(layer_state_str), "Base");
+      break;
+    case _RAISE:
+     snprintf(layer_state_str, sizeof(layer_state_str), "Raise");
+      break;
+    case _LOWER:
+     snprintf(layer_state_str, sizeof(layer_state_str), "Lower");
+      break;
+    case _ADJUST:
+     snprintf(layer_state_str, sizeof(layer_state_str), "Adj");
+      break;
+    case _GREEK:
+     snprintf(layer_state_str, sizeof(layer_state_str), "Greek");
+     break;
+    case _GAME:
+     snprintf(layer_state_str, sizeof(layer_state_str), "Game");
+      break;
+    default:
+     snprintf(layer_state_str, sizeof(layer_state_str), "Und-%ld", layer_state);
+    }
+    oled_write_ln(layer_state_str, false);
+
+    // KEYBOARD PET RENDER START
+    render_luna(0,13,current_wpm,isSneaking,isJumping,showedJump);
+    // KEYBOARD PET RENDER END
+}
+
+static void print_logo_narrow(void) {
+    oled_set_cursor(0,0);
+    oled_write_raw_P(hell_logo, sizeof(hell_logo));
+    // render_logo();
+
+    oled_set_cursor(0,7);
+    oled_write_ln(read_keylogs(), false);
+    // oled_write_ln("Test", false);
+
+    // wpm counter
+    char wpm_str[8];
+    oled_set_cursor(0,14);
+    sprintf(wpm_str, " %03d", current_wpm);
+    oled_write(wpm_str, false);
+
+    oled_set_cursor(0,15);
+    oled_write(" wpm", false);
+}
+
+void oled_task_user(void) {
+  current_wpm = get_current_wpm();
+
+  if (is_keyboard_master()) {
+    print_status_narrow();
   } else {
-    render_logo();
+    print_logo_narrow();
   }
 }
 #endif // OLED_DRIVER_ENABLE
@@ -177,6 +252,27 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     set_keylog(keycode, record);
 #endif
     // set_timelog();
+  }
+  switch (keycode) {
+        // KEYBOARD PET STATUS START
+        case KC_LCTL:
+        case KC_RCTL:
+            if (record->event.pressed) {
+                isSneaking = true;
+            } else {
+                isSneaking = false;
+            }
+            break;
+        case KC_SPC:
+            if (record->event.pressed) {
+                isJumping = true;
+                showedJump = false;
+            } else {
+                isJumping = false;
+                showedJump = true;
+            }
+            break;
+        // KEYBOARD PET STATUS END
   }
   return true;
 }
